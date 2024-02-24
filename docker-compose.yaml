@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo-f
+    ports:
+      - '27017:27017'
+    volumes:
+        # - /media/resbaloso/data/Coder/python/backend/fastapi/mongoDB/:/data/db
+        - ./mongodb:/data/db
+    networks:
+      backend:
+        ipv4_address: 172.25.0.2
+
+  mongoexpress:
+    image: mongo-express:latest
+    container_name: mongo_express-f
+    depends_on:
+      - mongo
+    ports:
+      - '8081:8081'
+    volumes:
+        # - /media/resbaloso/data/Coder/python/backend/fastapi/mongoDB/:/data/db
+        - ./mongodb:/data/db
+    networks:
+      backend:
+        ipv4_address: 172.25.0.3
+
+volumes:
+  mongodb:
+    name: mongo-backend
+
+
+networks:
+  backend:
+    name: back-end
+    ipam:
+      config:
+        - subnet: "172.25.0.0/16"
+
+ 
